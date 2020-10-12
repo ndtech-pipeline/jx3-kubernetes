@@ -8,15 +8,15 @@ buildPacks:
     gitURL: https://github.com/jenkins-x/jx3-pipeline-catalog.git
 cluster:
   chartRepository: http://bucketrepo/bucketrepo/charts/
-  clusterName: "kind"
+  clusterName: "ndtech-k8s-cluster"
   devEnvApprovers:
   - todo
-  environmentGitOwner: "todo"
+  environmentGitOwner: "ndtech-pipeline"
   gitKind: github
   gitName: github
   gitServer: https://github.com
   namespace: jx
-  project:  ""
+  project:  "236bbd80-57aa-4c99-b57f-1637e6ee250f"
   provider: kubernetes
   registry: "ghcr.io"
   zone: ""
