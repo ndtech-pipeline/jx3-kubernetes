@@ -1,0 +1,75 @@
+apiVersion: v1
+data:
+  config.yaml: |
+    branch-protection:
+      orgs:
+        ndtech-pipeline:
+          repos:
+            jx3-kubernetes:
+              required_status_checks:
+                contexts:
+                - promotion-build
+      protect-tested-repos: true
+    github:
+      LinkURL: null
+    in_repo_config: {}
+    plank: {}
+    pod_namespace: jx
+    postsubmits:
+      ndtech-pipeline/jx3-kubernetes:
+      - agent: tekton
+        branches:
+        - master
+        - main
+        labels:
+          aadpodidbinding: tekton-bot
+        name: promotion
+    presubmits:
+      ndtech-pipeline/jx3-kubernetes:
+      - agent: tekton
+        always_run: true
+        context: promotion-build
+        labels:
+          aadpodidbinding: tekton-bot
+        name: promotion-build
+        rerun_command: /test this
+        trigger: (?m)^/test( all| this),?(\s+|$)
+    prowjob_namespace: jx
+    push_gateway:
+      serve_metrics: false
+    tide:
+      context_options:
+        from-branch-protection: true
+        required-if-present-contexts: null
+        skip-unknown-contexts: false
+      merge_method:
+        ndtech-pipeline/jx3-kubernetes: merge
+      queries:
+      - labels:
+        - approved
+        missingLabels:
+        - do-not-merge
+        - do-not-merge/hold
+        - do-not-merge/work-in-progress
+        - needs-ok-to-test
+        - needs-rebase
+        repos:
+        - ndtech-pipeline/jx3-kubernetes
+      - labels:
+        - updatebot
+        missingLabels:
+        - do-not-merge
+        - do-not-merge/hold
+        - do-not-merge/work-in-progress
+        - needs-ok-to-test
+        - needs-rebase
+        repos:
+        - ndtech-pipeline/jx3-kubernetes
+      target_url: http://dashboard-jx.
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: config
+  namespace: jx
+  labels:
+    gitops.jenkins-x.io/pipeline: 'namespaces'
